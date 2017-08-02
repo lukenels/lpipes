@@ -32,7 +32,18 @@ instance (Monad m) => Monad (Proxy a' a b' b m) where
 
 data X
 
-runEffect :: (Monad m) => Proxy X () () X m r -> m r
+-- Type aliases
+
+type Pipe a b = Proxy () a () b
+type Consumer a = Proxy () a () X
+type Producer b = Proxy X () () b
+type Client a' a = Proxy a' a () X
+type Server b' b = Proxy X () b' b
+type Effect = Proxy X () () X
+
+-- Functions
+
+runEffect :: (Monad m) => Effect m r -> m r
 runEffect (Pure r) = return r
 runEffect (M m) = m >>= runEffect
 runEffect (Respond x _) = case x of
