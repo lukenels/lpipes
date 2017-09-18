@@ -106,3 +106,6 @@ await = request ()
 
 yield :: b -> Proxy a' a b' b m b'
 yield = respond
+
+cat :: Proxy () a () a m r
+cat = pull ()
